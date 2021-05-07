@@ -12,14 +12,19 @@ const storage = multer.diskStorage({
         cb(null,Date.now() + file.originalname)
     }
 })
-const upload = multer({storage: storage})
+const upload = multer({storage: storage}).single("img")
 
 app.use(express.static("uploads"))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
-app.post("/",upload.single("img"),(req,res) => {
-    res.json({corpo:req.body})
+app.post("/",(req,res) => {
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+          res.json({error:"Ocorreu um erro"})
+        } else if (err) {
+            res.json({error:"Ocorreu um erro desconhecido"})
+        }
 })
 
 app.listen(process.env.PORT || 3000);
