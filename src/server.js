@@ -19,9 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 app.post("/",upload.single("img"),(req,res) => {
-    res.send("Olá")
+    res.json({corpo:req.body})
 })
-
-
 
 app.listen(process.env.PORT || 3000);
